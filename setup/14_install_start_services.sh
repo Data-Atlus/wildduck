@@ -6,10 +6,10 @@ echo -e "\n-- Executing ${ORANGE}${OURNAME}${NC} subscript --"
 
 echo '\n\n'
 echo 'These are the configuration parameters for the webserver\n'
-echo 'Zone MTA: /opt/zone-mta'
+echo 'Zone MTA: /opt/zone-mta | /etc/zone-mta'
 echo 'HARAKA: /opt/haraka'
-echo 'Wildduck: /opt/wildduck'
-echo 'Wildduck Webmail: /opt/wildduck-webmail'
+echo 'Wildduck: /opt/wildduck | /etc/wildduck'
+echo 'Wildduck Webmail: /opt/wildduck-webmail | /etc/wildduck/wildduck-webmail.toml'
 echo 'Please update the database and redis configuration in the above before continuing. Press any key to continue'
 
 read ISUPDATED
