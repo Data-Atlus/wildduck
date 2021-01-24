@@ -12,8 +12,6 @@ DKIM_SECRET=`pwgen 12 -1`
 ZONEMTA_SECRET=`pwgen 12 -1`
 DKIM_SELECTOR=`$NODE_PATH -e 'console.log(Date().toString().substr(4, 3).toLowerCase() + new Date().getFullYear())'`
 
-$SYSTEMCTL_PATH enable mongod.service
-
 echo -e "\n-- These are the installed and required programs:"
 node -v
 redis-server -v
