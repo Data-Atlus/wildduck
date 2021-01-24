@@ -36,7 +36,7 @@ cd
 npm install --production --no-optional --no-package-lock --no-audit --ignore-scripts --no-shrinkwrap --unsafe-perm -g Haraka@$HARAKA_VERSION
 haraka -i /opt/haraka
 cd /opt/haraka
-npm install --production --no-optional --no-package-lock --no-audit --ignore-scripts --no-shrinkwrap --unsafe-perm --save haraka-plugin-rspamd haraka-plugin-redis Haraka@$HARAKA_VERSION
+npm install --production --no-optional --no-package-lock --no-audit --ignore-scripts --no-shrinkwrap --unsafe-perm --save haraka-plugin-redis haraka-plugin-watch haraka-plugin-limit Haraka@$HARAKA_VERSION
 
 # Haraka WildDuck plugin. Install as separate repo as it can be edited more easily later
 mkdir -p plugins/wildduck
@@ -52,52 +52,55 @@ echo "26214400" > config/databytes
 echo "$HOSTNAME" > config/me
 echo "WildDuck MX" > config/smtpgreeting
 
-echo "spf
+# Setup plugins file
+echo "# Check mail headers are valid
+data.headers
+
+# SPF setup
+spf
+
+# DKIM setup for verification and signing
+dkim_sign
 dkim_verify
+
+# Only accept mail where the MAIL FROM domain is resolvable to an MX record
+mail_from.is_resolvable
 
 ## ClamAV is disabled by default. Make sure freshclam has updated all
 ## virus definitions and clamav-daemon has successfully started before
 ## enabling it.
 #clamd
 
-rspamd
+# TLS Setup
 tls
 
 # WildDuck plugin handles recipient checking and queueing
-wildduck" > config/plugins
+wildduck
+
+# Limit plugin
+limit
+
+# Watch live SMTP traffic in a web interface
+watch
+" > config/plugins
 
 echo "key=/etc/wildduck/certs/privkey.pem
 cert=/etc/wildduck/certs/fullchain.pem" > config/tls.ini
-
-echo 'host = localhost
-port = 11333
-add_headers = always
-[dkim]
-enabled = true
-[header]
-bar = X-Rspamd-Bar
-report = X-Rspamd-Report
-score = X-Rspamd-Score
-spam = X-Rspamd-Spam
-[check]
-authenticated=true
-private_ip=true
-[reject]
-spam = false
-[soft_reject]
-enabled = true
-[rmilter_headers]
-enabled = true
-[spambar]
-positive = +
-negative = -
-neutral = /' > config/rspamd.ini
 
 echo 'clamd_socket = /var/run/clamav/clamd.ctl
 [reject]
 virus=true
 error=false' > config/clamd.ini
 
+# DKIM Setup
+DKIM_FILE_CONTENT=$(cat /opt/zone-mta/keys/$MAILDOMAIN-dkim.pem)
+echo "disabled=false
+selector=$DKIM_SELECTOR
+domain=$MAILDOMAIN
+dkim.private.key=$DKIM_FILE_CONTENT
+headers_to_sign = From,Sender,Reply-To,Subject,Date,Message-ID,To,Cc,MIME-Version" > config/dkim_sign.ini
+
+# Setup wildduck config file
 cp plugins/wildduck/config/wildduck.yaml config/wildduck.yaml
 sed -i -e "s/secret value/$SRS_SECRET/g;s/#loopSecret/loopSecret/g" config/wildduck.yaml
 
@@ -107,7 +110,7 @@ log_script "haraka"
 
 echo '[Unit]
 Description=Haraka MX Server
-After=mongod.service redis.service
+After=redis.service
 
 [Service]
 Environment="NODE_ENV=production"

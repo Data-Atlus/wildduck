@@ -4,6 +4,17 @@ OURNAME=14_install_start_services.sh
 
 echo -e "\n-- Executing ${ORANGE}${OURNAME}${NC} subscript --"
 
+echo '\n\n'
+echo 'These are the configuration parameters for the webserver\n'
+echo 'Zone MTA: /opt/zone-mta'
+echo 'HARAKA: /opt/haraka'
+echo 'Wildduck: /opt/wildduck'
+echo 'Wildduck Webmail: /opt/wildduck-webmail'
+echo 'Please update the database and redis configuration in the above before continuing. Press any key to continue'
+
+read ISUPDATED
+
+
 # Run tmpfiles definitions to ensure required directories/files
 systemd-tmpfiles --create --remove
 

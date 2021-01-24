@@ -17,7 +17,7 @@ $SYSTEMCTL_PATH enable mongod.service
 echo -e "\n-- These are the installed and required programs:"
 node -v
 redis-server -v
-mongod --version
+# mongod --version
 echo "HOSTNAME: $HOSTNAME"
 
 echo -e "-- Installing ${RED}npm globally${NC} (workaround)"

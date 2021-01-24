@@ -30,6 +30,12 @@ chmod +x /usr/local/bin/reload-services.sh
 echo "server {
     listen 80;
     listen [::]:80;
+
+    server_name $HOSTNAME;
+    return 301 https://$host$request_uri;
+}
+
+server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
 
