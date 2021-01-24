@@ -93,11 +93,11 @@ virus=true
 error=false' > config/clamd.ini
 
 # DKIM Setup
-DKIM_FILE_CONTENT=$(cat /opt/zone-mta/keys/$MAILDOMAIN-dkim.pem)
+DKIM_FILE_LOCATION="/opt/zone-mta/keys/$MAILDOMAIN-dkim.pem"
 echo "disabled=false
 selector=$DKIM_SELECTOR
 domain=$MAILDOMAIN
-dkim.private.key=$DKIM_FILE_CONTENT
+dkim.private.key=$DKIM_FILE_LOCATION
 headers_to_sign = From,Sender,Reply-To,Subject,Date,Message-ID,To,Cc,MIME-Version" > config/dkim_sign.ini
 
 # Setup wildduck config file

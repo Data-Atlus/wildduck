@@ -33,7 +33,7 @@ Run the following commands as root user. Before actually starting _install.sh_ y
 
 (run as `root`)
 
-    $ wget -O - https://raw.githubusercontent.com/Data-Atlus/wildduck/master/setup/get_install.sh | bash
+    $ wget -O - https://raw.githubusercontent.com/Data-Atlus/wildduck/dev/setup/get_install.sh | bash
     $ ./install.sh mydomain.com mail.mydomain.com
 
 Where _mydomain.com_ is the email address domain and _mail.mydomain.com_ is the hostname of current server.

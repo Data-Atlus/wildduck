@@ -68,7 +68,7 @@ log_script "wildduck-server"
 echo "[Unit]
 Description=WildDuck Mail Server
 Conflicts=cyrus.service dovecot.service
-After=mongod.service redis.service
+After=redis.service
 
 [Service]
 Environment=\"NODE_ENV=production\"

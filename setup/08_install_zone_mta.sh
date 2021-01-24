@@ -121,7 +121,7 @@ log_script "zone-mta"
 echo '[Unit]
 Description=Zone Mail Transport Agent
 Conflicts=sendmail.service exim.service postfix.service
-After=mongod.service redis.service
+After=redis.service
 
 [Service]
 Environment="NODE_ENV=production"
