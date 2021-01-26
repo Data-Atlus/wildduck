@@ -53,10 +53,7 @@ echo "$HOSTNAME" > config/me
 echo "WildDuck MX" > config/smtpgreeting
 
 # Setup plugins file
-echo "# Check mail headers are valid
-data.headers
-
-# SPF setup
+echo "# SPF setup
 spf
 
 # DKIM setup for verification and signing
